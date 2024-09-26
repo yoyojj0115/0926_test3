@@ -36,30 +36,28 @@ for i in range(len(stock)):  # 迴圈依序爬股價
         # 回報的訊息 (可自訂)
         message = f"股票 {stockid} 即時股價為 {price}"
 
-	    # 用 telegram bot 回報股價
+        # 用 telegram bot 回報股價
+        # bot token
+        token = "8036510727:AAHRbeOpNSms00GnAuENdsgijpIZ77xFa0Y"
 
-	    # bot token
+        # 使用者 id
+        chat_id = "6169735045"
 
-	    token = "8036510727:AAHRbeOpNSms00GnAuENdsgijpIZ77xFa0Y"
+        # bot 送訊息，記得對 message 進行 URL 編碼
+        telegram_url = f"https://api.telegram.org/bot{token}/sendMessage?chat_id={chat_id}&text={quote_plus(message)}"
 
-	    # 使用者 id
+        # 發送請求並檢查回應
+        response = requests.get(telegram_url)
 
-	    chat_id="6169735045"
+        if response.status_code == 200:
+            print(f"已成功發送股票 {stockid} 的訊息。")
+        else:
+            print(f"發送訊息失敗，狀態碼：{response.status_code}, 訊息：{response.text}")
+    else:
+        print(f"無法取得股票 {stockid} 的資料，狀態碼：{r.status_code}")
 
-	    # bot 送訊息
+    # 每次都停 3 秒
+    time.sleep(3)
 
-	    telegram_url = f"https://api.telegram.org/bot{token}/sendMessage?chat_id={chat_id}&text={message}"
 
-	    requests.get(telegram_url)
-	    
-            if response.status_code == 200:
-                print(f"已成功發送股票 {stockid} 的訊息。")
-            else:
-                print(f"發送訊息失敗，狀態碼：{response.status_code}, 訊息：{response.text}")
-     else:
-	    print(f"無法取得股票 {stockid} 的資料，狀態碼：{r.status_code}")
-       
-
-	    # 每次都停 3 秒
-
-	    time.sleep(3)
+	   
